@@ -1,0 +1,13 @@
+# Project-wide dependencies
+node_modules/
+server/node_modules/
+
+# Environment variables
+.env
+server/.env
+
+# Build outputs
+dist/
+
+# Misc
+.DS_Store
