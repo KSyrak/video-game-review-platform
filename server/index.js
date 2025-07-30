@@ -20,5 +20,8 @@ app.use('/api/auth', authRoutes);
 const gameRoutes = require('./routes/games');
 app.use('/api/games', gameRoutes);
 
+const reviewRoutes = require('./routes/reviews');
+app.use('/api/reviews', reviewRoutes);
+
 app.get('/', (req, res) => res.send('API is running'));
 app.listen(5000, () => console.log('Server running on port 5000'));

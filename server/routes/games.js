@@ -1,6 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const Game = require('../models/Game');
+const axios = require('axios');
+
+// Search games via RAWG API
+router.get('/search', async (req, res) => {
+    const { query } = req.query;
+    try {
+        const response = await axios.get('https://api.rawg.io/api/games', {
+            params: {
+                key: process.env.RAWG_API_KEY,
+                search: query,
+            },
+        });
+        res.json(response.data.results);
+    } catch (err) {
+        console.error('RAWG API error:', {
+            message: err.message,
+            status: err.response?.status,
+            data: err.response?.data,
+            config: err.config?.url,
+        });
+        res.status(500).json({ message: 'Error fetching games from RAWG', details: err.message });
+    }
+});
+
 
 // GET all games
 router.get('/', async (req, res) => {
@@ -69,5 +93,7 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
 
 module.exports = router;
