@@ -1,0 +1,31 @@
+.game-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.game-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.game-card h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+.game-card button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.game-card button:hover {
+    background: #0056b3;
+}
