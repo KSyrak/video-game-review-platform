@@ -1,45 +1,63 @@
 .dashboard {
-    padding: 20px;
-    text-align: center;
-    background: var(--bg-color);
-    min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+  background: var(--bg-color);
+  min-height: 100vh;
 }
-
 .dashboard button {
-    background: var(--button-bg);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin: 5px;
+  background: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 5px;
 }
-
 .dashboard button:hover {
-    background: var(--button-hover);
+  background: var(--button-hover);
 }
-
 .review-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
-
 .review-card {
-    border: 1px solid var(--border-color);
-    padding: 15px;
-    border-radius: 8px;
-    background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  border-radius: 8px;
+  background: var(--card-bg);
 }
-
 .review-card h3 {
-    margin: 10px 0;
-    color: var(--text-color);
+  margin: 10px 0;
+  color: var(--text-color);
 }
-
 .review-card p {
-    color: var(--text-color);
-    opacity: 0.8;
-    margin: 5px 0;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin: 5px 0;
+}
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-form input,
+.edit-form textarea {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+.edit-form button {
+  background: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.edit-form button:hover {
+  background: var(--button-hover);
 }

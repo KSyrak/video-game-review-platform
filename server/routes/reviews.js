@@ -1,66 +1,62 @@
 const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
-const auth = require('../middleware/auth')
+const auth = require('../middleware/auth');
+const axios = require('axios');
 
 router.get('/my-reviews', auth, async (req, res) => {
     try {
-        const reviews = await Review.find({ userId: req.userId }).populate('gameId', 'title');
-        console.log('Reviews for userId:', req.userId, reviews); // Debug
-        res.json(reviews);
+        const reviews = await Review.find({ userId: req.userId });
+        const reviewsWithTitles = await Promise.all(
+            reviews.map(async (review) => {
+                let title = 'Unknown Game';
+                try {
+                    if (review.gameId.match(/^[0-9]+$/)) { // RAWG ID (numeric string)
+                        const response = await axios.get(`https://api.rawg.io/api/games/${review.gameId}`, {
+                            params: { key: process.env.RAWG_API_KEY },
+                        });
+                        title = response.data.name;
+                    } else { // MongoDB ObjectId
+                        const game = await require('../models/Game').findById(review.gameId);
+                        title = game?.title || 'Unknown Game';
+                    }
+                } catch (err) {
+                    console.error('Error fetching game title:', err);
+                }
+                return { ...review.toObject(), gameId: { _id: review.gameId, title } };
+            })
+        );
+        res.json(reviewsWithTitles);
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-
-// GET all reviews
-router.get('/', async (req, res) => {
+// Existing POST, PUT, DELETE routes
+router.post('/', auth, async (req, res) => {
     try {
-        const reviews = await Review.find().populate('userId', 'username').populate('gameId', 'title');
-        res.json(reviews);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-// GET review by ID
-router.get('/:id', async (req, res) => {
-    try {
-        const review = await Review.findById(req.params.id).populate('userId', 'username').populate('gameId', 'title');
-        if (!review) return res.status(404).json({ message: 'Review not found' });
+        const review = new Review({
+            gameId: req.body.gameId,
+            userId: req.userId,
+            rating: req.body.rating,
+            comment: req.body.comment,
+        });
+        await review.save();
         res.json(review);
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// POST create review (protected)
-router.post('/', auth, async (req, res) => {
-    const { gameId, rating, comment } = req.body;
-    try {
-        const review = new Review({
-            gameId,
-            userId: req.userId, // Assume userId from auth middleware
-            rating,
-            comment,
-        });
-        await review.save();
-        res.status(201).json(review);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-// PUT update review (protected)
 router.put('/:id', auth, async (req, res) => {
-    const { rating, comment } = req.body;
     try {
         const review = await Review.findById(req.params.id);
         if (!review) return res.status(404).json({ message: 'Review not found' });
         if (review.userId.toString() !== req.userId) return res.status(403).json({ message: 'Unauthorized' });
-        Object.assign(review, { rating, comment });
+
+        review.rating = req.body.rating || review.rating;
+        review.comment = req.body.comment || review.comment;
         await review.save();
         res.json(review);
     } catch (err) {
@@ -68,13 +64,13 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
-// DELETE review (protected)
 router.delete('/:id', auth, async (req, res) => {
     try {
         const review = await Review.findById(req.params.id);
         if (!review) return res.status(404).json({ message: 'Review not found' });
         if (review.userId.toString() !== req.userId) return res.status(403).json({ message: 'Unauthorized' });
-        await review.remove();
+
+        await review.deleteOne();
         res.json({ message: 'Review deleted' });
     } catch (err) {
         res.status(500).json({ message: 'Server error' });

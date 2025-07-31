@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import NavBar from './NavBar';
 import AccessibilityControls from './AccessibilityControls';
 import '../styles/Register.css';
 
@@ -23,6 +24,7 @@ function Register() {
 
     return (
         <div>
+            <NavBar />
             <AccessibilityControls />
             <form className="register-form" onSubmit={handleSubmit}>
                 <h2>Register</h2>

@@ -6,23 +6,28 @@ const auth = require('../middleware/auth');
 
 // Search games via RAWG API
 router.get('/search', async (req, res) => {
-    const { query } = req.query;
     try {
+        const query = req.query.q;
+        if (!query) return res.status(400).json({ message: 'Search query required' });
+
         const response = await axios.get('https://api.rawg.io/api/games', {
             params: {
                 key: process.env.RAWG_API_KEY,
                 search: query,
             },
         });
-        res.json(response.data.results);
+
+        const games = response.data.results.map((game) => ({
+            title: game.name,
+            description: game.description_raw || 'No description available',
+            createdBy: { username: 'RAWG' }, // Placeholder, as RAWG games aren't user-created
+            _id: game.id.toString(), // Use RAWG ID as string
+        }));
+
+        res.json(games);
     } catch (err) {
-        console.error('RAWG API error:', {
-            message: err.message,
-            status: err.response?.status,
-            data: err.response?.data,
-            config: err.config?.url,
-        });
-        res.status(500).json({ message: 'Error fetching games from RAWG', details: err.message });
+        console.error('Error searching RAWG API:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 

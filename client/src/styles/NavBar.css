@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    gap: 20px;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    justify-content: flex-start;
+}
+
+.nav-link {
+    color: var(--button-bg);
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.nav-button {
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background: var(--button-hover);
+}
