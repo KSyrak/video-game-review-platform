@@ -9,17 +9,17 @@ function ReviewForm({ gameId }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/reviews', {
-                gameId,
-                rating: Number(rating),
-                comment,
-            });
+            const token = localStorage.getItem('token');
+            await axios.post(
+                'http://localhost:5000/api/reviews',
+                { gameId, rating: Number(rating), comment },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
             alert('Review submitted!');
             setRating('');
             setComment('');
         } catch (err) {
-            console.error('Error submitting review:', err);
-            alert('Failed to submit review');
+            alert('Failed to submit review: ' + (err.response?.data.message || 'Server error'));
         }
     };
 

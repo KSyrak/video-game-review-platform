@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Game = require('../models/Game');
 const axios = require('axios');
+const auth = require('../middleware/auth');
 
 // Search games via RAWG API
 router.get('/search', async (req, res) => {
@@ -48,7 +49,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST create game (protected route, requires user)
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { title, description, releaseDate, platforms, coverImage } = req.body;
     try {
         const game = new Game({
@@ -67,7 +68,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT update game (protected)
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { title, description, releaseDate, platforms, coverImage } = req.body;
     try {
         const game = await Game.findById(req.params.id);
@@ -82,7 +83,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE game (protected)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const game = await Game.findById(req.params.id);
         if (!game) return res.status(404).json({ message: 'Game not found' });

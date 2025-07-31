@@ -1,6 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
+const auth = require('../middleware/auth')
+
+router.get('/my-reviews', auth, async (req, res) => {
+    try {
+        const reviews = await Review.find({ userId: req.userId }).populate('gameId', 'title');
+        console.log('Reviews for userId:', req.userId, reviews); // Debug
+        res.json(reviews);
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 // GET all reviews
 router.get('/', async (req, res) => {
@@ -24,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST create review (protected)
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { gameId, rating, comment } = req.body;
     try {
         const review = new Review({
@@ -41,7 +54,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT update review (protected)
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { rating, comment } = req.body;
     try {
         const review = await Review.findById(req.params.id);
@@ -56,7 +69,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE review (protected)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const review = await Review.findById(req.params.id);
         if (!review) return res.status(404).json({ message: 'Review not found' });
