@@ -1,0 +1,44 @@
+:root {
+    /* Font sizes */
+    --font-size-normal: 1rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.4rem;
+
+    /* Light theme */
+    --bg-color: #f9f9f9;
+    --text-color: #333;
+    --card-bg: #fff;
+    --border-color: #ccc;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+}
+
+/* Dark theme */
+.dark-theme {
+    --bg-color: #222;
+    --text-color: #ddd;
+    --card-bg: #333;
+    --border-color: #555;
+    --button-bg: #1e90ff;
+    --button-hover: #0066cc;
+}
+
+/* Font sizes */
+.normal-font {
+    font-size: var(--font-size-normal);
+}
+
+.medium-font {
+    font-size: var(--font-size-medium);
+}
+
+.large-font {
+    font-size: var(--font-size-large);
+}
+
+body {
+    margin: 0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}

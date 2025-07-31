@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import AccessibilityControls from './AccessibilityControls';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
@@ -11,11 +12,9 @@ function Dashboard() {
     const fetchReviews = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('Fetching with token:', token); // Debug
         const response = await axios.get('http://localhost:5000/api/reviews/my-reviews', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Fetched reviews:', response.data); // Debug
         setReviews(response.data);
       } catch (err) {
         console.error('Error fetching reviews:', err);
@@ -34,6 +33,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
+      <AccessibilityControls />
       <h2>My Reviews</h2>
       <div className="review-list">
         {reviews.length === 0 ? (

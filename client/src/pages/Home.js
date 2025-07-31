@@ -1,9 +1,11 @@
 import React from 'react';
 import GameList from '../components/GameList';
+import AccessibilityControls from '../components/AccessibilityControls';
 
 function Home() {
     return (
         <div style={{ padding: '20px', textAlign: 'center' }}>
+            <AccessibilityControls />
             <h1>Video Game Reviews</h1>
             <GameList />
         </div>

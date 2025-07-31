@@ -6,26 +6,32 @@
 }
 
 .game-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    background: var(--card-bg);
 }
 
 .game-card h3 {
     margin: 10px 0;
-    font-size: 1.2em;
+    color: var(--text-color);
+}
+
+.game-card p {
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 5px 0;
 }
 
 .game-card button {
-    background: #007bff;
+    background: var(--button-bg);
     color: white;
     border: none;
     padding: 8px 16px;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .game-card button:hover {
-    background: #0056b3;
+    background: var(--button-hover);
 }

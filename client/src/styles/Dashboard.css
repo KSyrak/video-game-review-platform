@@ -1,20 +1,22 @@
 .dashboard {
     padding: 20px;
     text-align: center;
+    background: var(--bg-color);
+    min-height: 100vh;
 }
 
 .dashboard button {
-    background: #007bff;
+    background: var(--button-bg);
     color: white;
     border: none;
-    padding: 8px;
-    border-radius: 3px;
+    padding: 8px 16px;
     cursor: pointer;
+    border-radius: 4px;
     margin: 5px;
 }
 
 .dashboard button:hover {
-    background: #0056b3;
+    background: var(--button-hover);
 }
 
 .review-list {
@@ -25,7 +27,19 @@
 }
 
 .review-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 8px;
+    background: var(--card-bg);
+}
+
+.review-card h3 {
+    margin: 10px 0;
+    color: var(--text-color);
+}
+
+.review-card p {
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 5px 0;
 }

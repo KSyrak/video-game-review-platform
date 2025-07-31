@@ -4,24 +4,37 @@
     gap: 15px;
     padding: 20px;
     max-width: 300px;
-    margin: 0 auto;
+    margin: 20px auto;
+    background: var(--card-bg);
+    border-radius: 8px;
 }
 
 .register-form input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--card-bg);
+    color: var(--text-color);
 }
 
 .register-form button {
-    background: #007bff;
+    background: var(--button-bg);
     color: white;
     border: none;
-    padding: 8px;
-    border-radius: 3px;
+    padding: 10px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .register-form button:hover {
-    background: #0056b3;
+    background: var(--button-hover);
+}
+
+.register-form a {
+    color: var(--button-bg);
+    text-decoration: none;
+}
+
+.register-form a:hover {
+    text-decoration: underline;
 }
