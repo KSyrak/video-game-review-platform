@@ -27,13 +27,13 @@ const games = [
 
 const reviews = [
     {
-        gameId: null, // Will be updated after games are inserted
+        gameId: null, 
         userId: userId,
         rating: 4,
         comment: 'Amazing world design!',
     },
     {
-        gameId: null, // Will be updated
+        gameId: null, 
         userId: userId,
         rating: 3,
         comment: 'Fun but had some bugs.',

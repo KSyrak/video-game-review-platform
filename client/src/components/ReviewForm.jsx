@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; 
 import '../styles/ReviewForm.css';
 
 function ReviewForm({ gameId }) {
@@ -9,12 +9,7 @@ function ReviewForm({ gameId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        'http://localhost:5000/api/reviews',
-        { gameId, rating: Number(rating), comment },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.post('/api/reviews', { gameId, rating: Number(rating), comment });
       alert('Review submitted!');
       setRating('');
       setComment('');

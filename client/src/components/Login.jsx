@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; 
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import NavBar from './NavBar';
 import AccessibilityControls from './AccessibilityControls';
-import '../styles/Register.css';
+import '../styles/Login.css';
 
-function Register() {
-    const [username, setUsername] = useState('');
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -14,11 +14,14 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
-            alert('Registration successful! Please log in.');
-            navigate('/login');
+            const response = await api.post('/api/auth/login', { email, password });
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            const decoded = jwtDecode(token);
+            localStorage.setItem('userId', decoded.userId);
+            navigate('/dashboard');
         } catch (err) {
-            alert('Registration failed: ' + (err.response?.data.message || 'Server error'));
+            alert('Login failed: ' + (err.response?.data.message || 'Server error'));
         }
     };
 
@@ -26,16 +29,8 @@ function Register() {
         <div>
             <NavBar />
             <AccessibilityControls />
-            <form className="register-form" onSubmit={handleSubmit}>
-                <h2>Register</h2>
-                <label htmlFor="username">Username:</label>
-                <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
+            <form className="login-form" onSubmit={handleSubmit}>
+                <h2>Login</h2>
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
@@ -52,13 +47,13 @@ function Register() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Register</button>
+                <button type="submit">Login</button>
                 <p>
-                    Already have an account? <a href="/login">Login</a>
+                    Don't have an account? <a href="/register">Register</a>
                 </p>
             </form>
         </div>
     );
 }
 
-export default Register;
+export default Login;

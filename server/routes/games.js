@@ -21,7 +21,7 @@ router.get('/search', async (req, res) => {
             title: game.name,
             description: game.description_raw || 'No description available',
             createdBy: { username: 'RAWG' }, // Placeholder, as RAWG games aren't user-created
-            _id: game.id.toString(), // Use RAWG ID as string
+            _id: game.id.toString(), 
         }));
 
         res.json(games);
@@ -63,7 +63,7 @@ router.post('/', auth, async (req, res) => {
             releaseDate,
             platforms,
             coverImage,
-            createdBy: req.userId, // Assume userId is set by auth middleware (Week 4)
+            createdBy: req.userId, 
         });
         await game.save();
         res.status(201).json(game);

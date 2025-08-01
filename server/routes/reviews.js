@@ -33,7 +33,6 @@ router.get('/my-reviews', auth, async (req, res) => {
     }
 });
 
-// Existing POST, PUT, DELETE routes
 router.post('/', auth, async (req, res) => {
     try {
         const review = new Review({

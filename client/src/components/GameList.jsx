@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ReviewForm from './ReviwForm';
+import api from '../utils/api'; 
+import ReviewForm from './ReviewForm'; 
 import '../styles/GameList.css';
 
 function GameList() {
@@ -10,7 +10,7 @@ function GameList() {
     const fetchGames = async (query = '') => {
         try {
             const url = query ? `/api/games/search?q=${encodeURIComponent(query)}` : '/api/games';
-            const response = await axios.get(`http://localhost:5000${url}`);
+            const response = await api.get(url); 
             setGames(response.data);
         } catch (err) {
             console.error('Error fetching games:', err);

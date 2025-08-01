@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; 
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import AccessibilityControls from './AccessibilityControls';
@@ -15,10 +15,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/reviews/my-reviews', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get('/api/reviews/my-reviews'); 
         setReviews(response.data);
       } catch (err) {
         console.error('Error fetching reviews:', err);
@@ -38,12 +35,10 @@ function Dashboard() {
   const handleUpdate = async (e, reviewId) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(
-        `http://localhost:5000/api/reviews/${reviewId}`,
-        { rating: Number(rating), comment },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.put(`/api/reviews/${reviewId}`, {
+        rating: Number(rating),
+        comment,
+      });
       setReviews(reviews.map((r) => (r._id === reviewId ? response.data : r)));
       setEditingReview(null);
       setRating('');
@@ -57,10 +52,7 @@ function Dashboard() {
   const handleDelete = async (reviewId) => {
     if (!window.confirm('Are you sure you want to delete this review?')) return;
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/reviews/${reviewId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/api/reviews/${reviewId}`);
       setReviews(reviews.filter((r) => r._id !== reviewId));
       alert('Review deleted!');
     } catch (err) {

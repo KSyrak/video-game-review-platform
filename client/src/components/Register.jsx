@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; 
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
 import NavBar from './NavBar';
 import AccessibilityControls from './AccessibilityControls';
-import '../styles/Login.css';
+import '../styles/Register.css';
 
-function Login() {
+function Register() {
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -14,14 +14,11 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            const decoded = jwtDecode(token);
-            localStorage.setItem('userId', decoded.userId);
-            navigate('/dashboard');
+            await api.post('/api/auth/register', { username, email, password });
+            alert('Registration successful! Please log in.');
+            navigate('/login');
         } catch (err) {
-            alert('Login failed: ' + (err.response?.data.message || 'Server error'));
+            alert('Registration failed: ' + (err.response?.data.message || 'Server error'));
         }
     };
 
@@ -29,8 +26,16 @@ function Login() {
         <div>
             <NavBar />
             <AccessibilityControls />
-            <form className="login-form" onSubmit={handleSubmit}>
-                <h2>Login</h2>
+            <form className="register-form" onSubmit={handleSubmit}>
+                <h2>Register</h2>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
@@ -47,13 +52,13 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Login</button>
+                <button type="submit">Register</button>
                 <p>
-                    Don't have an account? <a href="/register">Register</a>
+                    Already have an account? <a href="/login">Login</a>
                 </p>
             </form>
         </div>
     );
 }
 
-export default Login;
+export default Register;
